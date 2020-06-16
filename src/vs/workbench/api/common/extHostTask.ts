@@ -467,6 +467,7 @@ export abstract class ExtHostTaskBase implements ExtHostTaskShape {
 	}
 
 	public get onDidStartTask(): Event<vscode.TaskStartEvent> {
+		console.log('  $onDidStartTask fire');
 		return this._onDidExecuteTask.event;
 	}
 
@@ -488,6 +489,7 @@ export abstract class ExtHostTaskBase implements ExtHostTaskShape {
 		}
 		this._lastStartedTask = execution.id;
 
+		console.log('  $onDidStartTask wait on execution');
 		this._onDidExecuteTask.fire({
 			execution: await this.getTaskExecution(execution)
 		});
@@ -499,10 +501,12 @@ export abstract class ExtHostTaskBase implements ExtHostTaskShape {
 
 	public async $OnDidEndTask(execution: tasks.TaskExecutionDTO): Promise<void> {
 		console.log(`$onDidEndTask execution.id=${execution.id}`);
+		console.log('  $onDidEndTask wait on execution');
 		const _execution = await this.getTaskExecution(execution);
 		this._taskExecutionPromises.delete(execution.id);
 		this._taskExecutions.delete(execution.id);
 		this.customExecutionComplete(execution);
+		console.log('  $onDidEndTask fire ', _execution);
 		this._onDidTerminateTask.fire({
 			execution: _execution
 		});
@@ -514,7 +518,9 @@ export abstract class ExtHostTaskBase implements ExtHostTaskShape {
 
 	public async $onDidStartTaskProcess(value: tasks.TaskProcessStartedDTO): Promise<void> {
 		console.log(`$onDidStartTaskProcess value.id=${value.id}`);
+		console.log('  $onDidStartTaskProcess wait on execution');
 		const execution = await this.getTaskExecution(value.id);
+		console.log('  $onDidStartTaskProcess fire ', execution);
 		if (execution) {
 			this._onDidTaskProcessStarted.fire({
 				execution: execution,
@@ -528,8 +534,10 @@ export abstract class ExtHostTaskBase implements ExtHostTaskShape {
 	}
 
 	public async $onDidEndTaskProcess(value: tasks.TaskProcessEndedDTO): Promise<void> {
-		console.log(`$onDidEndTask value.id=${value.id}`);
+		console.log(`$onDidEndTaskProcess value.id=${value.id}`);
 		const execution = await this.getTaskExecution(value.id);
+		console.log('  $onDidEndTaskProcess wait on execution');
+		console.log('  $onDidEndTaskProcess fire ', execution);
 		if (execution) {
 			this._onDidTaskProcessEnded.fire({
 				execution: execution,
