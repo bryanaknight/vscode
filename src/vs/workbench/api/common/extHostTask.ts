@@ -506,7 +506,7 @@ export abstract class ExtHostTaskBase implements ExtHostTaskShape {
 		this._taskExecutionPromises.delete(execution.id);
 		this._taskExecutions.delete(execution.id);
 		this.customExecutionComplete(execution);
-		console.log('  $onDidEndTask fire ', _execution);
+		console.log('  $onDidEndTask fire ', _execution._id);
 		this._onDidTerminateTask.fire({
 			execution: _execution
 		});
@@ -520,7 +520,7 @@ export abstract class ExtHostTaskBase implements ExtHostTaskShape {
 		console.log(`$onDidStartTaskProcess value.id=${value.id}`);
 		console.log('  $onDidStartTaskProcess wait on execution');
 		const execution = await this.getTaskExecution(value.id);
-		console.log('  $onDidStartTaskProcess fire ', execution);
+		console.log('  $onDidStartTaskProcess fire ', execution._id);
 		if (execution) {
 			this._onDidTaskProcessStarted.fire({
 				execution: execution,
@@ -537,7 +537,7 @@ export abstract class ExtHostTaskBase implements ExtHostTaskShape {
 		console.log(`$onDidEndTaskProcess value.id=${value.id}`);
 		const execution = await this.getTaskExecution(value.id);
 		console.log('  $onDidEndTaskProcess wait on execution');
-		console.log('  $onDidEndTaskProcess fire ', execution);
+		console.log('  $onDidEndTaskProcess fire ', execution._id);
 		if (execution) {
 			this._onDidTaskProcessEnded.fire({
 				execution: execution,
