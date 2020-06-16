@@ -153,6 +153,7 @@ import { window, tasks, Disposable, TaskDefinition, Task, EventEmitter, CustomEx
 				}
 
 				tasks.onDidStartTaskProcess(e => {
+					console.log('onDidStartTaskProcess');
 					if (e.execution === taskExecution) {
 						checkEqualCount();
 					} else {
@@ -161,6 +162,7 @@ import { window, tasks, Disposable, TaskDefinition, Task, EventEmitter, CustomEx
 				});
 
 				tasks.onDidEndTaskProcess(e => {
+					console.log('onDidEndTaskProcess');
 					if (e.execution === taskExecution) {
 						checkEqualCount();
 					} else {

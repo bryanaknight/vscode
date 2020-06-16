@@ -475,6 +475,7 @@ export abstract class ExtHostTaskBase implements ExtHostTaskShape {
 	}
 
 	public async $onDidStartTask(execution: tasks.TaskExecutionDTO, terminalId: number): Promise<void> {
+		console.log(`$onDidStartTask execution.id=${execution.id}, terminalId=${terminalId}`);
 		const customExecution: types.CustomExecution | undefined = this._providedCustomExecutions2.get(execution.id);
 		if (customExecution) {
 			if (this._activeCustomExecutions2.get(execution.id) !== undefined) {
@@ -497,6 +498,7 @@ export abstract class ExtHostTaskBase implements ExtHostTaskShape {
 	}
 
 	public async $OnDidEndTask(execution: tasks.TaskExecutionDTO): Promise<void> {
+		console.log(`$onDidEndTask execution.id=${execution.id}`);
 		const _execution = await this.getTaskExecution(execution);
 		this._taskExecutionPromises.delete(execution.id);
 		this._taskExecutions.delete(execution.id);
@@ -511,6 +513,7 @@ export abstract class ExtHostTaskBase implements ExtHostTaskShape {
 	}
 
 	public async $onDidStartTaskProcess(value: tasks.TaskProcessStartedDTO): Promise<void> {
+		console.log(`$onDidStartTaskProcess value.id=${value.id}`);
 		const execution = await this.getTaskExecution(value.id);
 		if (execution) {
 			this._onDidTaskProcessStarted.fire({
@@ -525,6 +528,7 @@ export abstract class ExtHostTaskBase implements ExtHostTaskShape {
 	}
 
 	public async $onDidEndTaskProcess(value: tasks.TaskProcessEndedDTO): Promise<void> {
+		console.log(`$onDidEndTask value.id=${value.id}`);
 		const execution = await this.getTaskExecution(value.id);
 		if (execution) {
 			this._onDidTaskProcessEnded.fire({
